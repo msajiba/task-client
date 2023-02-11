@@ -31,11 +31,13 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter Your password"
+                minlength="6"
+                maxlength="10"
                 required
               />
             </div>
 
-            <Link to="#" className={styleCss.forget} >
+            <Link to="#" className={styleCss.forget}>
               <small> Forget password</small>
             </Link>
 

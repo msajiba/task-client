@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {toast}  from "react-toastify";
 import styleCss from "./Register.module.css";
 
 const Register = () => {
@@ -11,8 +13,17 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = { firstName, lastName, email, password };
-    console.log(user);
-    e.target.reset();
+
+    const URL = "http://localhost:5000/api/user";
+    const { data } = await axios.post(URL, user);
+
+    if (data?.status) {
+      toast.success(data?.message);
+      e.target.reset();
+    } else {
+      toast.error(data?.message);
+    }
+    console.log(data);
   };
 
   return (
@@ -50,6 +61,8 @@ const Register = () => {
                 type="password"
                 name="password"
                 placeholder="Enter Your password"
+                minlength="6"
+                maxlength="10"
                 required
               />
             </div>
