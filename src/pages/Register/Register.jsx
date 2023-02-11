@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {toast}  from "react-toastify";
+import { toast } from "react-toastify";
 import styleCss from "./Register.module.css";
 
 const Register = () => {
@@ -23,7 +23,6 @@ const Register = () => {
     } else {
       toast.error(data?.message);
     }
-    console.log(data);
   };
 
   return (
@@ -61,8 +60,8 @@ const Register = () => {
                 type="password"
                 name="password"
                 placeholder="Enter Your password"
-                minlength="6"
-                maxlength="10"
+                minLength="6"
+                maxLength="10"
                 required
               />
             </div>

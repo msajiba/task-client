@@ -1,17 +1,51 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import useAdmin from "../../hooks/useAdmin";
+import Loader from "../Shared/Loader/Loader";
 import styleCss from "./Login.module.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState("");
+
+  const navigate = useNavigate();
+
+  const [admin, isLoading] = useAdmin(user);
+  isLoading && <Loader />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = { email, password };
-    console.log(user);
-    e.target.reset();
+
+    try {
+      const user = { email, password };
+      const URL = "http://localhost:5000/api/user/login";
+      const { data } = await axios.post(URL, user);
+
+      setUser(data?.user);
+
+      if (data?.status) {
+        toast.success(data?.message);
+        e.target.reset();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      if (!error?.response?.data?.status) {
+        toast.error(error?.response?.data?.message);
+      }
+    }
+
+    if (admin) {
+      console.log("dashboard");
+    }
   };
+
+  if (admin) {
+    navigate("/dashboard");
+  }
 
   return (
     <div className={styleCss.container}>
@@ -31,8 +65,8 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter Your password"
-                minlength="6"
-                maxlength="10"
+                minLength="6"
+                maxLength="10"
                 required
               />
             </div>
